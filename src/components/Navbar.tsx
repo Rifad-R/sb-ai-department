@@ -125,8 +125,8 @@ export default function Navbar() {
               })}
             </nav>
 
-            {/* Admin Controls (only visible when logged in) */}
-            {session?.user && (
+            {/* Admin Controls */}
+            {session?.user ? (
               <div className="flex items-center gap-2">
                 <Link
                   href="/dashboard/admin"
@@ -150,6 +150,18 @@ export default function Navbar() {
                   Sign Out
                 </button>
               </div>
+            ) : (
+              <Link
+                href="/login"
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium transition-all"
+                style={{
+                  background: "var(--color-dark-text)",
+                  color: "var(--color-surface-white)",
+                }}
+              >
+                <User size={12} />
+                Admin
+              </Link>
             )}
           </div>
         </div>
@@ -254,7 +266,7 @@ export default function Navbar() {
                   borderTop: "1px solid var(--color-border-subtle)",
                 }}
               >
-                {session?.user && (
+                {session?.user ? (
                   <div className="space-y-3">
                     <Link
                       href="/dashboard/admin"
@@ -279,6 +291,18 @@ export default function Navbar() {
                       Sign Out
                     </button>
                   </div>
+                ) : (
+                  <Link
+                    href="/login"
+                    className="flex items-center justify-center gap-2 w-full py-3 rounded-xl text-sm font-medium"
+                    style={{
+                      background: "var(--color-dark-text)",
+                      color: "var(--color-surface-white)",
+                    }}
+                  >
+                    <User size={14} />
+                    Admin Login
+                  </Link>
                 )}
               </div>
             </div>
