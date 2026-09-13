@@ -204,7 +204,7 @@ export default function Footer() {
       </div>
 
       {/* Mobile bottom padding so content doesn't hide behind tab bar */}
-      <div className="h-16 hide-desktop" />
+      <div className="hide-desktop" style={{ height: "calc(var(--mobile-bottom-nav-height) + 16px + env(safe-area-inset-bottom, 0px))" }} />
     </footer>
   );
 }

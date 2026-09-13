@@ -2,20 +2,19 @@
 
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { useEffect } from "react";
-import { Users, Mail, Award } from "lucide-react";
-
-const facultyData = [
-  {
-    name: "Faculty Member",
-    designation: "Head of Department",
-    qualifications: "PhD in Artificial Intelligence",
-    specialization: "Machine Learning & Deep Learning",
-    image: null,
-  },
-];
+import { useEffect, useState } from "react";
+import { Users, Mail, ArrowRight, Award } from "lucide-react";
 
 export default function FacultyPage() {
+  const [faculty, setFaculty] = useState<any[]>([]);
+
+  useEffect(() => {
+    fetch("/api/faculty")
+      .then((r) => r.json())
+      .then((data) => setFaculty(data))
+      .catch(() => {});
+  }, []);
+
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -27,132 +26,202 @@ export default function FacultyPage() {
     );
     document.querySelectorAll(".animate-on-scroll").forEach((el) => observer.observe(el));
     return () => observer.disconnect();
-  }, []);
+  }, [faculty]);
+
+  const getAvatarGradient = (name: string) => {
+    const colors = [
+      ["#1C1917", "#2C2520"],
+      ["#231F1C", "#3A3330"],
+      ["#2C2520", "#1C1917"],
+      ["#3A3330", "#231F1C"],
+      ["#1C1917", "#3A3330"],
+      ["#2C2520", "#231F1C"],
+    ];
+    const idx = name.charCodeAt(0) % colors.length;
+    return `linear-gradient(135deg, ${colors[idx][0]}, ${colors[idx][1]})`;
+  };
 
   return (
     <>
       <Navbar />
 
       {/* Hero */}
-      <section className="pt-28 pb-16" style={{ background: "var(--color-bg-light)" }}>
-        <div className="container-main">
-          <div className="max-w-3xl animate-fade-in-up">
-            <div className="badge-outline badge mb-4">
-              <Users size={12} />
-              Our Team
-            </div>
-            <h1>
-              Meet Our{" "}
-              <span style={{ color: "var(--color-primary-peach)" }}>Faculty</span>
-            </h1>
-            <p className="text-lg mt-4" style={{ color: "var(--color-muted-text)" }}>
-              Dedicated educators shaping the next generation of AI and Data Science professionals.
-            </p>
-          </div>
+      <section
+        className="relative overflow-hidden"
+        style={{
+          paddingTop: "var(--page-top-padding)",
+          paddingBottom: "4rem",
+          background: "var(--color-dark-text)",
+        }}
+      >
+        {/* Ambient glow */}
+        <div
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full opacity-20 pointer-events-none"
+          style={{
+            background: "radial-gradient(circle, rgba(253,178,124,0.3), transparent 70%)",
+            filter: "blur(80px)",
+          }}
+        />
+        <div className="container-main relative z-10 text-center">
+          <p
+            className="text-[11px] font-bold uppercase tracking-[4px] mb-4"
+            style={{ color: "var(--color-primary-peach)" }}
+          >
+            Our Team
+          </p>
+          <h1
+            className="text-3xl sm:text-4xl lg:text-5xl mb-4"
+            style={{ fontFamily: "var(--font-serif)", color: "#fff" }}
+          >
+            Meet the{" "}
+            <span style={{ color: "var(--color-primary-peach)" }}>Faculty</span>
+          </h1>
+          <p
+            className="text-sm max-w-lg mx-auto"
+            style={{ color: "rgba(255,255,255,0.4)" }}
+          >
+            Dedicated educators shaping the next generation of AI and Data Science professionals.
+          </p>
         </div>
       </section>
 
-      {/* Faculty Grid */}
-      <section className="section-padding">
+      {/* Faculty Cards Grid */}
+      <section
+        style={{
+          background: "var(--color-dark-text)",
+          padding: "2rem 0 6rem",
+        }}
+      >
         <div className="container-main">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {facultyData.map((faculty, index) => (
-              <div
-                key={index}
-                className="card overflow-hidden animate-on-scroll group"
-                style={{ animationDelay: `${index * 0.1}s` }}
-              >
-                {/* Photo */}
+            {faculty.map((member, index) => {
+              const initials = member.name
+                .split(" ")
+                .map((n: string) => n.charAt(0))
+                .join("")
+                .substring(0, 2);
+
+              return (
                 <div
-                  className="relative h-64 flex items-center justify-center"
-                  style={{ background: "linear-gradient(135deg, var(--color-bg-canvas), var(--color-bg-warm))" }}
+                  key={member.id}
+                  className="animate-on-scroll group relative rounded-2xl overflow-hidden transition-all duration-500"
+                  style={{
+                    animationDelay: `${index * 0.1}s`,
+                    background: "rgba(255,255,255,0.03)",
+                    border: "1px solid rgba(253,178,124,0.08)",
+                  }}
                 >
+                  {/* Hover Glow */}
                   <div
-                    className="w-24 h-24 rounded-full flex items-center justify-center"
+                    className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
                     style={{
-                      background: "var(--color-primary-peach)",
-                      color: "var(--color-dark-text)",
+                      background: "linear-gradient(135deg, rgba(253,178,124,0.06), transparent)",
+                      border: "1px solid rgba(253,178,124,0.2)",
+                      borderRadius: "1rem",
+                    }}
+                  />
+
+                  {/* Photo Area */}
+                  <div
+                    className="relative aspect-[3/4] flex items-center justify-center overflow-hidden"
+                    style={{ background: getAvatarGradient(member.name) }}
+                  >
+                    {member.photoUrl ? (
+                      <img
+                        src={member.photoUrl}
+                        alt={member.name}
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <span
+                        className="select-none"
+                        style={{
+                          color: "rgba(253,178,124,0.1)",
+                          fontFamily: "var(--font-serif)",
+                          fontSize: "5rem",
+                          fontWeight: "bold",
+                        }}
+                      >
+                        {initials}
+                      </span>
+                    )}
+
+                    {/* Email icon on hover */}
+                    {member.email && (
+                      <div
+                        className="absolute right-3 top-1/2 -translate-y-1/2 flex flex-col gap-2 opacity-0 group-hover:opacity-100 translate-x-2 group-hover:translate-x-0 transition-all duration-300"
+                      >
+                        <a
+                          href={`mailto:${member.email}`}
+                          className="w-9 h-9 rounded-full flex items-center justify-center backdrop-blur-md transition-colors"
+                          style={{
+                            background: "rgba(253,178,124,0.15)",
+                            border: "1px solid rgba(253,178,124,0.25)",
+                            color: "var(--color-primary-peach)",
+                          }}
+                        >
+                          <Mail size={15} />
+                        </a>
+                      </div>
+                    )}
+
+                    {/* Qualifications badge top-left */}
+                    <div className="absolute top-3 left-3">
+                      <span
+                        className="text-[8px] font-bold uppercase tracking-wide px-2 py-1 rounded-full backdrop-blur-md"
+                        style={{
+                          background: "rgba(253,178,124,0.2)",
+                          border: "1px solid rgba(253,178,124,0.3)",
+                          color: "var(--color-primary-peach-light)",
+                        }}
+                      >
+                        {member.qualifications || "Faculty"}
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Name & Role Label */}
+                  <div
+                    className="relative -mt-5 mx-3 mb-3 px-4 py-3 rounded-xl flex items-center justify-between backdrop-blur-lg"
+                    style={{
+                      background: "rgba(253,178,124,0.08)",
+                      border: "1px solid rgba(253,178,124,0.15)",
                     }}
                   >
-                    <Users size={40} />
-                  </div>
-                  {/* Glass overlay */}
-                  <div className="photo-glass-overlay opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    <div className="flex items-center gap-2">
-                      <Mail size={14} />
-                      <span className="text-xs">Contact via department</span>
+                    <div className="flex items-center gap-2.5 min-w-0">
+                      <Award size={15} style={{ color: "var(--color-primary-peach)" }} className="shrink-0" />
+                      <div className="min-w-0">
+                        <p className="text-sm font-semibold truncate" style={{ color: "#fff" }}>
+                          {member.name}
+                        </p>
+                        <p className="text-[10px] truncate" style={{ color: "rgba(253,178,124,0.6)" }}>
+                          {member.designation}
+                          {member.specialization ? ` · ${member.specialization}` : ""}
+                        </p>
+                      </div>
                     </div>
+                    <ArrowRight
+                      size={14}
+                      className="shrink-0 group-hover:translate-x-1 transition-transform"
+                      style={{ color: "rgba(253,178,124,0.5)" }}
+                    />
                   </div>
                 </div>
-
-                {/* Info */}
-                <div className="p-5">
-                  <h3 className="text-lg mb-1" style={{ fontFamily: "var(--font-serif)" }}>
-                    {faculty.name}
-                  </h3>
-                  <div
-                    className="text-sm font-medium mb-2"
-                    style={{ color: "var(--color-primary-peach)" }}
-                  >
-                    {faculty.designation}
-                  </div>
-                  <div className="space-y-1.5 mt-3">
-                    <div className="flex items-center gap-2 text-xs" style={{ color: "var(--color-muted-text)" }}>
-                      <Award size={13} />
-                      {faculty.qualifications}
-                    </div>
-                    <div className="flex items-center gap-2 text-xs" style={{ color: "var(--color-muted-text)" }}>
-                      <Award size={13} />
-                      {faculty.specialization}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            ))}
-
-            {/* Placeholder cards for future faculty */}
-            {[1, 2].map((i) => (
-              <div
-                key={`placeholder-${i}`}
-                className="card p-8 flex flex-col items-center justify-center text-center animate-on-scroll"
-                style={{
-                  minHeight: "380px",
-                  background: "var(--color-bg-warm)",
-                  border: "2px dashed var(--color-border-subtle)",
-                  animationDelay: `${(i + 1) * 0.1}s`,
-                }}
-              >
-                <div
-                  className="w-16 h-16 rounded-full flex items-center justify-center mb-4"
-                  style={{ background: "var(--color-border-subtle)", color: "var(--color-muted-text)" }}
-                >
-                  <Users size={28} />
-                </div>
-                <p className="text-sm font-medium" style={{ color: "var(--color-muted-text)" }}>
-                  Faculty profile coming soon
-                </p>
-                <p className="text-xs mt-1" style={{ color: "var(--color-light-text)" }}>
-                  Details will be updated by admin
-                </p>
-              </div>
-            ))}
+              );
+            })}
           </div>
 
-          <div
-            className="mt-12 p-6 rounded-xl text-center animate-on-scroll"
-            style={{
-              background: "var(--color-bg-light)",
-              border: "1px solid var(--color-border-subtle)",
-            }}
-          >
-            <p className="text-sm" style={{ color: "var(--color-muted-text)" }}>
-              Faculty profiles are managed by the department admin. Check back for updates or{" "}
-              <a href="/contact" className="font-semibold" style={{ color: "var(--color-primary-peach)" }}>
-                contact the department
-              </a>{" "}
-              for more information.
-            </p>
-          </div>
+          {faculty.length === 0 && (
+            <div className="text-center py-20">
+              <Users size={48} style={{ color: "rgba(253,178,124,0.15)" }} className="mx-auto mb-4" />
+              <p className="text-lg font-semibold" style={{ color: "rgba(255,255,255,0.4)" }}>
+                No faculty profiles yet
+              </p>
+              <p className="text-sm mt-1" style={{ color: "rgba(255,255,255,0.2)" }}>
+                Faculty profiles will be added by the department admin.
+              </p>
+            </div>
+          )}
         </div>
       </section>
 

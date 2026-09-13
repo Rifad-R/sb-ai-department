@@ -56,6 +56,14 @@
   /* Spacing */
   --section-padding: clamp(3rem, 8vw, 7rem);
   --container-max: 1280px;
+
+  /* Navbar Heights */
+  --navbar-height-desktop: 72px;
+  --navbar-height-mobile: 60px;
+  --page-top-padding: calc(var(--navbar-height-desktop) + 60px);
+  --sticky-top-desktop: var(--navbar-height-desktop);
+  --sticky-top-mobile: var(--navbar-height-mobile);
+  --mobile-bottom-nav-height: 56px;
 }
 
 /* ============================================
@@ -195,12 +203,17 @@ a {
   border: 1px solid var(--color-border-subtle);
   box-shadow: var(--shadow-subtle);
   transition: all var(--transition-base);
-  overflow: hidden;
+  overflow: visible;
 }
 
 .card:hover {
   box-shadow: var(--shadow-card-hover);
   transform: translateY(-4px);
+}
+
+/* Use overflow-hidden explicitly where image clipping is needed */
+.card-clip {
+  overflow: hidden;
 }
 
 .card-glass {
@@ -450,7 +463,7 @@ a {
   font-weight: 500;
   font-size: 0.9rem;
   color: var(--color-muted-text);
-  padding: 0.5rem 1rem;
+  padding: 0.4rem 0.6rem;
   border-radius: var(--radius-full);
   transition: all var(--transition-base);
   position: relative;
@@ -484,6 +497,10 @@ a {
    ============================================ */
 
 @media (max-width: 768px) {
+  :root {
+    --page-top-padding: calc(var(--navbar-height-mobile) + 32px);
+  }
+
   .section-padding {
     padding-top: 3rem;
     padding-bottom: 3rem;
@@ -563,8 +580,13 @@ a {
   padding: 0.75rem;
   font-size: 0.85rem;
   border-bottom: 1px solid var(--color-border-subtle);
+  border-right: 1px solid var(--color-border-subtle);
   transition: background var(--transition-base);
   vertical-align: top;
+}
+
+.timetable-grid td:last-child {
+  border-right: none;
 }
 
 .timetable-grid tr:hover td {

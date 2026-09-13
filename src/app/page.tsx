@@ -217,7 +217,7 @@ export default function HomePage() {
       {/* ========================
           ABOUT PREVIEW
           ======================== */}
-      <section className="section-padding" id="about-preview" style={{ background: "var(--color-bg-light)" }}>
+      <section className="section-padding overflow-hidden" id="about-preview" style={{ background: "var(--color-bg-light)" }}>
         <div className="container-main">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div className="animate-on-scroll">

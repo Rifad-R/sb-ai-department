@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { useEffect, useState } from "react";
@@ -100,7 +99,7 @@ export default function AcademicsPage() {
       <Navbar />
 
       {/* Hero */}
-      <section className="pt-28 pb-16" style={{ background: "var(--color-bg-light)" }}>
+      <section className="pb-16" style={{ paddingTop: "var(--page-top-padding)", background: "var(--color-bg-light)" }}>
         <div className="container-main">
           <div className="max-w-3xl animate-fade-in-up">
             <div className="badge-outline badge mb-4">
@@ -118,7 +117,7 @@ export default function AcademicsPage() {
       </section>
 
       {/* Tab Switcher */}
-      <section className="sticky top-[72px] md:top-[72px] z-30 py-4" style={{ background: "var(--color-bg-canvas)" }}>
+      <section className="sticky z-30 py-4" style={{ background: "var(--color-bg-canvas)", top: "var(--navbar-height-desktop)" }}>
         <div className="container-main">
           <div className="flex gap-2">
             {(["timetable", "syllabus"] as const).map((tab) => (
@@ -149,7 +148,7 @@ export default function AcademicsPage() {
                 Class <span style={{ color: "var(--color-primary-peach)" }}>Timetable</span>
               </h2>
               <p className="mb-8" style={{ color: "var(--color-muted-text)" }}>
-                Weekly schedule for BSc. AI & Data Science — Semester 1 (2026–2027)
+                Weekly schedule for BSc. AI &amp; Data Science — Semester 1 (2026–2027)
               </p>
 
               {/* Desktop Timetable */}
@@ -157,36 +156,140 @@ export default function AcademicsPage() {
                 <table className="timetable-grid w-full">
                   <thead>
                     <tr>
-                      <th className="text-left" style={{ width: "120px" }}>Day</th>
+                      <th className="text-left" style={{ width: "100px" }}>Day</th>
                       {periodHeaders.map((h) => (
                         <th key={h}>{h}</th>
                       ))}
                     </tr>
                   </thead>
                   <tbody>
-                    {timetableData.map((row) => (
-                      <tr key={row.day}>
-                        <td>{row.day}</td>
-                        {row.periods.map((period, pi) => (
-                          <td key={pi}>
-                            {period.code && (
-                              <span
-                                className="inline-block text-[10px] font-bold px-2 py-0.5 rounded-full mb-1"
-                                style={{
-                                  background: `${getCodeColor(period.code)}20`,
-                                  color: getCodeColor(period.code),
-                                }}
-                              >
-                                {period.code}
-                              </span>
-                            )}
-                            <div className="text-xs" style={{ color: "var(--color-muted-text)" }}>
-                              {period.name}
-                            </div>
-                          </td>
-                        ))}
-                      </tr>
-                    ))}
+                    {/* Monday */}
+                    <tr>
+                      <td>Monday</td>
+                      <td>
+                        <span className="inline-block text-[10px] font-bold px-2 py-0.5 rounded-full mb-1" style={{ background: `${getCodeColor("DSC-A")}20`, color: getCodeColor("DSC-A") }}>DSC-A</span>
+                        <div className="text-xs" style={{ color: "var(--color-muted-text)" }}>Intro to AI &amp; Data Science</div>
+                      </td>
+                      <td>
+                        <span className="inline-block text-[10px] font-bold px-2 py-0.5 rounded-full mb-1" style={{ background: `${getCodeColor("DSC-B")}20`, color: getCodeColor("DSC-B") }}>DSC-B</span>
+                        <div className="text-xs" style={{ color: "var(--color-muted-text)" }}>Python (Allied Minor)</div>
+                      </td>
+                      <td>
+                        <span className="inline-block text-[10px] font-bold px-2 py-0.5 rounded-full mb-1" style={{ background: `${getCodeColor("DSC-C")}20`, color: getCodeColor("DSC-C") }}>DSC-C</span>
+                        <div className="text-xs" style={{ color: "var(--color-muted-text)" }}>Statistics</div>
+                      </td>
+                      <td colSpan={2} style={{ textAlign: "center" }}>
+                        <span className="inline-block text-[10px] font-bold px-2 py-0.5 rounded-full mb-1" style={{ background: `${getCodeColor("Lang")}20`, color: getCodeColor("Lang") }}>Language</span>
+                        <div className="text-xs" style={{ color: "var(--color-muted-text)" }}>English &amp; Malayalam / Hindi</div>
+                      </td>
+                      <td>
+                        <span className="inline-block text-[10px] font-bold px-2 py-0.5 rounded-full mb-1" style={{ background: `${getCodeColor("Lab")}20`, color: getCodeColor("Lab") }}>Lab</span>
+                        <div className="text-xs" style={{ color: "var(--color-muted-text)" }}>Lab (Excel)</div>
+                      </td>
+                    </tr>
+
+                    {/* Tuesday */}
+                    <tr>
+                      <td>Tuesday</td>
+                      <td>
+                        <span className="inline-block text-[10px] font-bold px-2 py-0.5 rounded-full mb-1" style={{ background: `${getCodeColor("DSC-C")}20`, color: getCodeColor("DSC-C") }}>DSC-C</span>
+                        <div className="text-xs" style={{ color: "var(--color-muted-text)" }}>Statistics</div>
+                      </td>
+                      <td colSpan={2} style={{ textAlign: "center" }}>
+                        <span className="inline-block text-[10px] font-bold px-2 py-0.5 rounded-full mb-1" style={{ background: `${getCodeColor("Lab")}20`, color: getCodeColor("Lab") }}>Lab</span>
+                        <div className="text-xs" style={{ color: "var(--color-muted-text)" }}>Python Lab / DSC-B</div>
+                      </td>
+                      <td colSpan={2} style={{ textAlign: "center" }}>
+                        <span className="inline-block text-[10px] font-bold px-2 py-0.5 rounded-full mb-1" style={{ background: `${getCodeColor("Lab")}20`, color: getCodeColor("Lab") }}>Lab</span>
+                        <div className="text-xs" style={{ color: "var(--color-muted-text)" }}>MDC Lab</div>
+                      </td>
+                      <td>
+                        <span className="inline-block text-[10px] font-bold px-2 py-0.5 rounded-full mb-1" style={{ background: `${getCodeColor("Lab")}20`, color: getCodeColor("Lab") }}>Lab</span>
+                        <div className="text-xs" style={{ color: "var(--color-muted-text)" }}>Lab (Excel)</div>
+                      </td>
+                    </tr>
+
+                    {/* Wednesday */}
+                    <tr>
+                      <td>Wednesday</td>
+                      <td>
+                        <span className="inline-block text-[10px] font-bold px-2 py-0.5 rounded-full mb-1" style={{ background: `${getCodeColor("DSC-A")}20`, color: getCodeColor("DSC-A") }}>DSC-A</span>
+                        <div className="text-xs" style={{ color: "var(--color-muted-text)" }}>AI &amp; Data Science</div>
+                      </td>
+                      <td style={{ textAlign: "center" }}>
+                        <div className="text-xs" style={{ color: "var(--color-light-text)" }}>—</div>
+                      </td>
+                      <td>
+                        <span className="inline-block text-[10px] font-bold px-2 py-0.5 rounded-full mb-1" style={{ background: `${getCodeColor("MDC")}20`, color: getCodeColor("MDC") }}>MDC</span>
+                        <div className="text-xs" style={{ color: "var(--color-muted-text)" }}>MDC</div>
+                      </td>
+                      <td>
+                        <span className="inline-block text-[10px] font-bold px-2 py-0.5 rounded-full mb-1" style={{ background: `${getCodeColor("DSC-B")}20`, color: getCodeColor("DSC-B") }}>DSC-B</span>
+                        <div className="text-xs" style={{ color: "var(--color-muted-text)" }}>Python</div>
+                      </td>
+                      <td>
+                        <span className="inline-block text-[10px] font-bold px-2 py-0.5 rounded-full mb-1" style={{ background: `${getCodeColor("Lang")}20`, color: getCodeColor("Lang") }}>Lang</span>
+                        <div className="text-xs" style={{ color: "var(--color-muted-text)" }}>Malayalam / Hindi</div>
+                      </td>
+                      <td>
+                        <span className="inline-block text-[10px] font-bold px-2 py-0.5 rounded-full mb-1" style={{ background: `${getCodeColor("Elec")}20`, color: getCodeColor("Elec") }}>Elec</span>
+                        <div className="text-xs" style={{ color: "var(--color-muted-text)" }}>Swayam</div>
+                      </td>
+                    </tr>
+
+                    {/* Thursday */}
+                    <tr>
+                      <td>Thursday</td>
+                      <td>
+                        <span className="inline-block text-[10px] font-bold px-2 py-0.5 rounded-full mb-1" style={{ background: `${getCodeColor("DSC-A")}20`, color: getCodeColor("DSC-A") }}>DSC-A</span>
+                        <div className="text-xs" style={{ color: "var(--color-muted-text)" }}>AI</div>
+                      </td>
+                      <td>
+                        <span className="inline-block text-[10px] font-bold px-2 py-0.5 rounded-full mb-1" style={{ background: `${getCodeColor("DSC-B")}20`, color: getCodeColor("DSC-B") }}>DSC-B</span>
+                        <div className="text-xs" style={{ color: "var(--color-muted-text)" }}>Python</div>
+                      </td>
+                      <td>
+                        <span className="inline-block text-[10px] font-bold px-2 py-0.5 rounded-full mb-1" style={{ background: `${getCodeColor("Lang")}20`, color: getCodeColor("Lang") }}>Lang</span>
+                        <div className="text-xs" style={{ color: "var(--color-muted-text)" }}>English</div>
+                      </td>
+                      <td>
+                        <span className="inline-block text-[10px] font-bold px-2 py-0.5 rounded-full mb-1" style={{ background: `${getCodeColor("DSC-C")}20`, color: getCodeColor("DSC-C") }}>DSC-C</span>
+                        <div className="text-xs" style={{ color: "var(--color-muted-text)" }}>Statistics (Minor)</div>
+                      </td>
+                      <td>
+                        <span className="inline-block text-[10px] font-bold px-2 py-0.5 rounded-full mb-1" style={{ background: `${getCodeColor("MDC")}20`, color: getCodeColor("MDC") }}>MDC</span>
+                        <div className="text-xs" style={{ color: "var(--color-muted-text)" }}>MDC</div>
+                      </td>
+                      <td>
+                        <span className="inline-block text-[10px] font-bold px-2 py-0.5 rounded-full mb-1" style={{ background: `${getCodeColor("Lab")}20`, color: getCodeColor("Lab") }}>Lab</span>
+                        <div className="text-xs" style={{ color: "var(--color-muted-text)" }}>Tech Lab</div>
+                      </td>
+                    </tr>
+
+                    {/* Friday */}
+                    <tr>
+                      <td>Friday</td>
+                      <td>
+                        <span className="inline-block text-[10px] font-bold px-2 py-0.5 rounded-full mb-1" style={{ background: `${getCodeColor("DSC-A")}20`, color: getCodeColor("DSC-A") }}>DSC-A</span>
+                        <div className="text-xs" style={{ color: "var(--color-muted-text)" }}>AI &amp; Data Science</div>
+                      </td>
+                      <td colSpan={2} style={{ textAlign: "center" }}>
+                        <span className="inline-block text-[10px] font-bold px-2 py-0.5 rounded-full mb-1" style={{ background: `${getCodeColor("Lab")}20`, color: getCodeColor("Lab") }}>Lab</span>
+                        <div className="text-xs" style={{ color: "var(--color-muted-text)" }}>Statistics Lab (DSC-C)</div>
+                      </td>
+                      <td>
+                        <span className="inline-block text-[10px] font-bold px-2 py-0.5 rounded-full mb-1" style={{ background: `${getCodeColor("Lang")}20`, color: getCodeColor("Lang") }}>Lang</span>
+                        <div className="text-xs" style={{ color: "var(--color-muted-text)" }}>English</div>
+                      </td>
+                      <td>
+                        <span className="inline-block text-[10px] font-bold px-2 py-0.5 rounded-full mb-1" style={{ background: `${getCodeColor("Lang")}20`, color: getCodeColor("Lang") }}>Lang</span>
+                        <div className="text-xs" style={{ color: "var(--color-muted-text)" }}>Malayalam / Hindi</div>
+                      </td>
+                      <td>
+                        <span className="inline-block text-[10px] font-bold px-2 py-0.5 rounded-full mb-1" style={{ background: `${getCodeColor("Elec")}20`, color: getCodeColor("Elec") }}>Elec</span>
+                        <div className="text-xs" style={{ color: "var(--color-muted-text)" }}>Mentoring</div>
+                      </td>
+                    </tr>
                   </tbody>
                 </table>
               </div>
@@ -227,22 +330,6 @@ export default function AcademicsPage() {
                     </div>
                   </div>
                 ))}
-              </div>
-
-              {/* Original timetable image */}
-              <div className="mt-10 animate-on-scroll">
-                <h3 className="text-lg mb-4" style={{ fontFamily: "var(--font-serif)" }}>
-                  Original Timetable
-                </h3>
-                <div className="card overflow-hidden" style={{ maxWidth: "700px" }}>
-                  <Image
-                    src="/images/timetable-original.jpg"
-                    alt="Original handwritten timetable"
-                    width={700}
-                    height={500}
-                    className="w-full h-auto"
-                  />
-                </div>
               </div>
             </div>
           ) : (

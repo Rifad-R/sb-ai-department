@@ -55,7 +55,7 @@ export default function ContactPage() {
       <Navbar />
 
       {/* Hero */}
-      <section className="pt-28 pb-16" style={{ background: "var(--color-bg-light)" }}>
+      <section className="pb-16" style={{ paddingTop: "var(--page-top-padding)", background: "var(--color-bg-light)" }}>
         <div className="container-main">
           <div className="max-w-3xl animate-fade-in-up">
             <div className="badge-outline badge mb-4">

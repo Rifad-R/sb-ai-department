@@ -1,6 +1,8 @@
 "use client";
 
 import { useState } from "react";
+import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import {
@@ -9,7 +11,7 @@ import {
   Lock,
   Mail,
   ArrowLeft,
-  Sparkles,
+  Shield,
 } from "lucide-react";
 
 export default function LoginPage() {
@@ -18,17 +20,31 @@ export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
     setLoading(true);
 
-    // Simulate login - In production, this connects to next-auth
-    setTimeout(() => {
+    try {
+      const result = await signIn("credentials", {
+        email,
+        password,
+        redirect: false,
+      });
+
+      if (result?.error) {
+        setError(result.error);
+      } else {
+        router.push("/dashboard/admin");
+        router.refresh();
+      }
+    } catch {
+      setError("Something went wrong. Please try again.");
+    } finally {
       setLoading(false);
-      setError("Login functionality will be enabled by the department admin.");
-    }, 1500);
+    }
   };
 
   return (
@@ -82,10 +98,10 @@ export default function LoginPage() {
                 color: "var(--color-dark-text)",
               }}
             >
-              Welcome Back
+              Admin Portal
             </h1>
             <p className="text-sm" style={{ color: "var(--color-muted-text)" }}>
-              Sign in to access the department portal
+              Sign in to manage department data
             </p>
           </div>
 
@@ -113,7 +129,7 @@ export default function LoginPage() {
                   onChange={(e) => setEmail(e.target.value)}
                   required
                   className="input pl-11"
-                  placeholder="you@sbcollege.ac.in"
+                  placeholder="admin@sbcollege.ac.in"
                 />
               </div>
             </div>
@@ -159,8 +175,9 @@ export default function LoginPage() {
               <div
                 className="p-3 rounded-lg text-sm"
                 style={{
-                  background: "var(--color-primary-peach)",
-                  color: "var(--color-dark-text)",
+                  background: "#FEE2E2",
+                  color: "#991B1B",
+                  border: "1px solid #FECACA",
                 }}
               >
                 {error}
@@ -200,7 +217,7 @@ export default function LoginPage() {
             }}
           >
             <p>
-              This portal is for authorized department members only.
+              This portal is for authorized department admins only.
               <br />
               Contact the department office for access.
             </p>
@@ -229,32 +246,17 @@ export default function LoginPage() {
               color: "var(--color-dark-text)",
             }}
           >
-            <Sparkles size={28} />
+            <Shield size={28} />
           </div>
           <h2
             className="text-white text-2xl mb-4"
             style={{ fontFamily: "var(--font-serif)" }}
           >
-            Department Portal
+            Admin Portal
           </h2>
           <p className="text-sm" style={{ color: "rgba(255,255,255,0.5)" }}>
-            Access academic resources, manage student data, and collaborate with
-            faculty — all in one secure platform.
+            Manage students, faculty, and academic notes — all in one secure dashboard.
           </p>
-          <div className="mt-8 flex justify-center gap-4">
-            {["Faculty", "Students", "Admin"].map((role) => (
-              <span
-                key={role}
-                className="text-[10px] font-medium uppercase tracking-wider px-3 py-1.5 rounded-full"
-                style={{
-                  border: "1px solid rgba(255,255,255,0.2)",
-                  color: "rgba(255,255,255,0.5)",
-                }}
-              >
-                {role}
-              </span>
-            ))}
-          </div>
         </div>
       </div>
     </div>

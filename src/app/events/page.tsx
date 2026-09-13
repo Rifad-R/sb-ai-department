@@ -125,7 +125,7 @@ export default function EventsPage() {
       <Navbar />
 
       {/* Hero */}
-      <section className="pt-28 pb-16" style={{ background: "var(--color-bg-light)" }}>
+      <section className="pb-16" style={{ paddingTop: "var(--page-top-padding)", background: "var(--color-bg-light)" }}>
         <div className="container-main">
           <div className="max-w-3xl animate-fade-in-up">
             <div className="badge-peach badge mb-4">
@@ -146,8 +146,8 @@ export default function EventsPage() {
 
       {/* Filters & Toggle */}
       <section
-        className="py-6 sticky top-[72px] z-30"
-        style={{ background: "var(--color-bg-canvas)" }}
+        className="py-6 sticky z-30"
+        style={{ background: "var(--color-bg-canvas)", top: "var(--navbar-height-desktop)" }}
       >
         <div className="container-main">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">

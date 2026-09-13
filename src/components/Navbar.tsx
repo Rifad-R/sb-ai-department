@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useSession, signOut } from "next-auth/react";
 import {
   Home,
   Info,
@@ -18,6 +19,8 @@ import {
   Menu,
   X,
   ChevronRight,
+  LogOut,
+  User,
 } from "lucide-react";
 
 const navItems = [
@@ -36,6 +39,7 @@ const navItems = [
 
 export default function Navbar() {
   const pathname = usePathname();
+  const { data: session } = useSession();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
@@ -66,13 +70,13 @@ export default function Navbar() {
       <header
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 hide-mobile ${
           scrolled
-            ? "bg-white/80 backdrop-blur-xl shadow-md"
-            : "bg-transparent"
+            ? "bg-white shadow-md"
+            : "bg-white"
         }`}
         id="main-nav"
       >
         <div className="container-main">
-          <div className="flex items-center justify-between h-[72px]">
+          <div className="flex items-center justify-between" style={{ height: "var(--navbar-height-desktop)" }}>
             {/* Logo */}
             <Link href="/" className="flex items-center gap-3 group">
               <div
@@ -101,7 +105,7 @@ export default function Navbar() {
             </Link>
 
             {/* Desktop Nav Links */}
-            <nav className="flex items-center gap-1">
+            <nav className="flex items-center gap-0.5">
               {navItems.map((item) => {
                 const isActive =
                   pathname === item.href ||
@@ -110,7 +114,7 @@ export default function Navbar() {
                   <Link
                     key={item.href}
                     href={item.href}
-                    className={`nav-link text-xs whitespace-nowrap ${
+                    className={`nav-link text-[11px] whitespace-nowrap ${
                       isActive ? "active" : ""
                     }`}
                     id={`nav-${item.label.toLowerCase().replace(/\s+/g, "-")}`}
@@ -121,10 +125,32 @@ export default function Navbar() {
               })}
             </nav>
 
-            {/* Login Button */}
-            <Link href="/login" className="btn-primary btn text-xs px-4 py-2">
-              Login
-            </Link>
+            {/* Admin Controls (only visible when logged in) */}
+            {session?.user && (
+              <div className="flex items-center gap-2">
+                <Link
+                  href="/dashboard/admin"
+                  className="flex items-center gap-2 px-3 py-1.5 rounded-full"
+                  style={{
+                    background: "var(--color-bg-warm)",
+                    border: "1px solid var(--color-border-subtle)",
+                  }}
+                >
+                  <User size={14} style={{ color: "var(--color-primary-peach-dark)" }} />
+                  <span className="text-xs font-medium" style={{ color: "var(--color-dark-text)" }}>
+                    {session.user.name}
+                  </span>
+                </Link>
+                <button
+                  onClick={() => signOut({ callbackUrl: "/" })}
+                  className="btn-outline btn text-xs px-3 py-1.5 gap-1"
+                  style={{ fontSize: "0.7rem" }}
+                >
+                  <LogOut size={12} />
+                  Sign Out
+                </button>
+              </div>
+            )}
           </div>
         </div>
       </header>
@@ -138,7 +164,7 @@ export default function Navbar() {
         }`}
         id="mobile-nav"
       >
-        <div className="flex items-center justify-between px-4 h-[60px]">
+        <div className="flex items-center justify-between px-4" style={{ height: "var(--navbar-height-mobile)" }}>
           <Link href="/" className="flex items-center gap-2">
             <div
               className="w-8 h-8 rounded-full flex items-center justify-center text-white font-bold text-xs"
@@ -181,8 +207,9 @@ export default function Navbar() {
         >
           <div className="absolute inset-0 bg-black/30 backdrop-blur-sm" />
           <nav
-            className="absolute top-[60px] right-0 bottom-0 w-[280px] overflow-y-auto"
+            className="absolute right-0 bottom-0 w-[280px] overflow-y-auto"
             style={{
+              top: "var(--navbar-height-mobile)",
               background: "var(--color-bg-light)",
               borderLeft: "1px solid var(--color-border-subtle)",
             }}
@@ -227,12 +254,32 @@ export default function Navbar() {
                   borderTop: "1px solid var(--color-border-subtle)",
                 }}
               >
-                <Link
-                  href="/login"
-                  className="btn-accent btn w-full text-sm"
-                >
-                  Login
-                </Link>
+                {session?.user && (
+                  <div className="space-y-3">
+                    <Link
+                      href="/dashboard/admin"
+                      className="flex items-center gap-3 px-4 py-3 rounded-xl"
+                      style={{ background: "var(--color-bg-warm)" }}
+                    >
+                      <User size={18} style={{ color: "var(--color-primary-peach-dark)" }} />
+                      <div>
+                        <span className="text-sm font-medium block" style={{ color: "var(--color-dark-text)" }}>
+                          {session.user.name}
+                        </span>
+                        <span className="text-xs" style={{ color: "var(--color-muted-text)" }}>
+                          Admin Dashboard
+                        </span>
+                      </div>
+                    </Link>
+                    <button
+                      onClick={() => signOut({ callbackUrl: "/" })}
+                      className="btn-outline btn w-full text-sm gap-2"
+                    >
+                      <LogOut size={16} />
+                      Sign Out
+                    </button>
+                  </div>
+                )}
               </div>
             </div>
           </nav>
@@ -250,7 +297,7 @@ export default function Navbar() {
         }}
         id="mobile-bottom-nav"
       >
-        <div className="flex items-center justify-around py-2 px-1">
+        <div className="flex items-center justify-around px-1" style={{ paddingTop: "0.5rem", paddingBottom: "calc(0.5rem + env(safe-area-inset-bottom, 0px))" }}>
           {[navItems[0], navItems[2], navItems[4], navItems[9], navItems[10]].map(
             (item) => {
               const Icon = item.icon;

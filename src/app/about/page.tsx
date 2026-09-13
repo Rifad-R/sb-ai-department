@@ -35,7 +35,7 @@ export default function AboutPage() {
       <Navbar />
 
       {/* Hero */}
-      <section className="pt-28 pb-16 relative overflow-hidden" style={{ background: "var(--color-bg-light)" }}>
+      <section className="pb-16 relative" style={{ paddingTop: "var(--page-top-padding)", background: "var(--color-bg-light)" }}>
         <div className="container-main relative z-10">
           <div className="max-w-3xl animate-fade-in-up">
             <div className="badge-outline badge mb-4">About Us</div>

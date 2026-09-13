@@ -3,20 +3,20 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev -H 0.0.0.0",
     "build": "next build",
     "start": "next start",
     "lint": "eslint"
   },
   "dependencies": {
     "@ai-sdk/google": "^4.0.69",
-    "@prisma/client": "^7.10.0",
+    "@prisma/client": "^6.19.3",
     "ai": "^7.0.99",
     "bcryptjs": "^3.0.3",
     "lucide-react": "^1.45.0",
     "next": "16.3.5",
     "next-auth": "^4.24.15",
-    "prisma": "^8.0.0-rc.13",
+    "prisma": "^6.19.3",
     "react": "19.2.8",
     "react-dom": "19.2.8",
     "zod": "^4.6.2"
@@ -30,6 +30,15 @@
     "eslint": "^9",
     "eslint-config-next": "16.3.5",
     "tailwindcss": "^4",
+    "tsx": "^4.23.13",
     "typescript": "^5"
+  },
+  "prisma": {
+    "seed": "npx tsx prisma/seed.ts"
+  },
+  "allowScripts": {
+    "prisma@6.19.3": true,
+    "@prisma/client@6.19.3": true,
+    "@prisma/engines@6.19.3": true
   }
 }
