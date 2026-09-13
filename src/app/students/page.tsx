@@ -12,9 +12,14 @@ export default function StudentsPage() {
 
   useEffect(() => {
     fetch("/api/students")
-      .then((r) => r.json())
-      .then((data) => setStudents(data))
-      .catch(() => {});
+      .then((r) => {
+        if (!r.ok) return [];
+        return r.json();
+      })
+      .then((data) => {
+        if (Array.isArray(data)) setStudents(data);
+      })
+      .catch(() => setStudents([]));
   }, []);
 
   useEffect(() => {

@@ -11,7 +11,7 @@ export async function GET() {
     });
     return NextResponse.json(faculty);
   } catch (error) {
-    return NextResponse.json({ error: "Failed to fetch faculty" }, { status: 500 });
+    return NextResponse.json([]);
   }
 }
 

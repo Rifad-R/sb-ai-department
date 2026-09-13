@@ -10,9 +10,14 @@ export default function FacultyPage() {
 
   useEffect(() => {
     fetch("/api/faculty")
-      .then((r) => r.json())
-      .then((data) => setFaculty(data))
-      .catch(() => {});
+      .then((r) => {
+        if (!r.ok) return [];
+        return r.json();
+      })
+      .then((data) => {
+        if (Array.isArray(data)) setFaculty(data);
+      })
+      .catch(() => setFaculty([]));
   }, []);
 
   useEffect(() => {
